@@ -23,16 +23,11 @@ public class Prefs {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
         try (InputStream stream = classLoader.getResourceAsStream(filename)){
-            if (stream == null){
-                throw new NullPointerException("Stream is null");
-            }
-
             JsonElement prefsElement = JsonParser.parseReader(new InputStreamReader(stream));
-
             TypeToken<?> typeToken = TypeToken.getParameterized(Map.class, String.class, Object.class);
             prefs = new Gson().fromJson(prefsElement, typeToken.getType());
-        } catch (IOException ioException){
-            ioException.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
         }
     }
 

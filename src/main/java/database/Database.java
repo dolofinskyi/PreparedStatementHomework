@@ -12,12 +12,7 @@ public class Database {
     private Connection connection;
 
     private Database() {
-        try {
-            String connectionUrl = new Prefs().getString(Prefs.JDBC_CONNECTION_URL);
-            connection = DriverManager.getConnection(connectionUrl);
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
+
     }
 
     public static Database getInstance() {
@@ -25,6 +20,14 @@ public class Database {
     }
 
     public Connection getConnection() {
+        try {
+            if (connection == null || connection.isClosed()){
+                String connectionUrl = new Prefs().getString(Prefs.JDBC_CONNECTION_URL);
+                connection = DriverManager.getConnection(connectionUrl);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
         return connection;
     }
 
